@@ -1,50 +1,37 @@
-# OP-TEE Note
+# OP-TEE 代码阅读文档
 
-This is the one and only OP-TEE note, serving both as a reminder for myself of
-what I have learned and the official report of the progress I have made in the
-case of OP-TEE. All OP-TEE related notes goes here, not in any other files. For
-better clarity, as well as to avoid duplicate information, no content should be
-copy-pasted directly from the Internet.
+## BL1
 
-## Rationale
+*以下涉及的文件路径都位于`<OP-TEE根目录>/trusted-firmware-a/`下。*
 
-The goal of this is to understand the **code** in [Trusted side of the
-TEE](https://github.com/OP-TEE/optee_os) in order to gain insight of how to
-prove this system is safe. Proofs using Isabelle/HOL and/or autocorres is
-preferred. The initial focus should be on memory, especially on shared
-memories, and secure boot. After that, focus on threading. If there are
-communications between threads in the secure world, or between one thread in
-the secure world and another thread in the normal world, I should pay
-attention. The general rule of focus is: if the subject is in need for security
-proof, it's a focus; if a subject can possibly help the proof e.g. make it
-easier, it's a focus. Also focus on trusted applications: my first goal is to
-get a minimalist application up and running, while having insights on the
-background processes.
+BL1的入口函数是`bl1/aarch32/bl1_entrypoint.S`中的`bl1_entrypoint`（由`bl1/bl1.ld.S`中的`ENTRY(bl1_entrypoint)`确定），其流程图如下。
 
-## Resources
+![bl1_entrypoint-flow-chart](img-doc/01.jpg)
 
-All of the resources for this note should be listed here.
+## BL2
 
-- Official OP-TEE documentation
-  - [HTML version](https://optee.readthedocs.io/general/index.html)
-  - [PDF version](https://buildmedia.readthedocs.org/media/pdf/optee/latest/optee.pdf)
+*以下涉及的文件路径都位于`<OP-TEE根目录>/trusted-firmware-a/`下。*
 
-## Basics Concepts
+类似的，BL2的入口函数是`bl2/aarch32/bl2_entrypoint.S`中的`bl2_entrypoint`（由`bl2/bl2_el3.ld.S`中的`ENTRY(bl2_entrypoint)`确定），其流程图如下。
 
-### A Quick Scan of OP-TEE
+![bl2_entrypoint-flow-chart](img-doc/02.jpg)
 
-TEE stands for Trusted Execution Environment. OP-TEE is an open-source solution
-of TEE. It provides security and isolation to the system. By design, it relys
-on the ARM Trustzone technology, which is a hardware isolation mechanism; but
-it also supports different mechanisms such as VMs and seperate CPUs.
+## BL32-MMU
 
-### About Shared Memory
+*以下涉及的文件路径都位于`<OP-TEE根目录>/optee_os/`下。*
 
-TBD
+BL32入口位于`core/arch/arm/kernel/generic_entry_a32.S`的`_start`函数。
 
-## Advanced Concepts
+![generic_entry_a32-flow-chart](img-doc/03.jpg)
 
-TBD
+其中，MMU相关的部分在Thread #1执行到`reset_primary`中调用`core_init_mmu_map`实现。
 
-## Build
+## 参考-ARM汇编指令
 
+[参考来源于keil.com](http://www.keil.com/support/man/docs/armasm/armasm_dom1361289850039.htm)
+
+| 指令 | 全称 |
+| - | - |
+| bl | Branch with Link |
+| b | Branch |
+| isb | Instruction Synchronization Barrier |

@@ -41,12 +41,12 @@ repo sync -j4 --no-clone-bundle
 
 ### 加速代码同步
 
-执行`repo init`时，需要从`https://gerrit.googlesource.com/`拉取资源，国内会被GFW拦截，repo自带的工具也不能设置代理，所以需要用代理执行`git clone -mirror https://gerrit.googlesource.com/git-repo`将整个仓库以bare的形式拉到本地，然后在`repo init`设定参数：
+执行`repo init`时，需要从`https://gerrit.googlesource.com/`拉取资源，国内会被GFW拦截，repo自带的工具也不能设置代理，所以需要用代理执行`git clone --mirror https://gerrit.googlesource.com/git-repo`将整个仓库以bare的形式拉到本地，然后在`repo init`设定参数：
 ```bash
 repo init --repo-url=<下载的git-repo.git路径> -u https://github.com/OP-TEE/manifest.git -m default.xml -b 3.7.0
 ```
 
-执行`repo sync`时，也需要从多个来源拉取git仓库，其中包括整个Linux内核，因此速度很慢（一个小时到十几个小时不等）。要解决这个问题，可以在执行`repo sync`之前，在`.repo/manifests/default.xml`中找到所有的相关url，全部用`git clone -mirror`拉到本地（需要一定时间，但是会快一点），然后把`default.xml`里所有的http地址替换成本地的仓库路径。这样之后如果需要重新执行`repo sync`，就可以直接指定使用本地仓库了，将等待时间缩短到小于5分钟。使用命令如`sed -i "s+https://github.com+<本地路径>+g" .repo/manifests/default.xml`可以查找并替换所有的url，便于自动化。
+执行`repo sync`时，也需要从多个来源拉取git仓库，其中包括整个Linux内核，因此速度很慢（一个小时到十几个小时不等）。要解决这个问题，可以在执行`repo sync`之前，在`.repo/manifests/default.xml`中找到所有的相关url，全部用`git clone --mirror`拉到本地（需要一定时间，但是会快一点），然后把`default.xml`里所有的http地址替换成本地的仓库路径。这样之后如果需要重新执行`repo sync`，就可以直接指定使用本地仓库了，将等待时间缩短到小于5分钟。使用命令如`sed -i "s+https://github.com+<本地路径>+g" .repo/manifests/default.xml`可以查找并替换所有的url，便于自动化。
 
 ## 安装-build
 
@@ -110,11 +110,11 @@ cd <qemu-v7-project>/toolchains/aarch32/bin
 
 ### 可用的符号表
 
-| 概述           | 指令                                                                                     |
-| ------------- | --------------------------------------------------------------------------------------- |
-| ATF-BL1       | `symbol-file ~/Workspace/OP-TEE-3.7.0/trusted-firmware-a/build/qemu/debug/bl1/bl1.elf`  |
-| ATF-BL2       | `symbol-file ~/Workspace/OP-TEE-3.7.0/trusted-firmware-a/build/qemu/debug/bl2/bl2.elf`  |
-| OP-TEE kernel | `symbol-file ~/Workspace/OP-TEE-3.7.0/optee_os/out/arm/core/tee.elf`                    |
+| 概述 | 指令 |
+| - | - |
+| ATF-BL1 | `symbol-file ~/Workspace/OP-TEE-3.7.0/trusted-firmware-a/build/qemu/debug/bl1/bl1.elf` |
+| ATF-BL2 | `symbol-file ~/Workspace/OP-TEE-3.7.0/trusted-firmware-a/build/qemu/debug/bl2/bl2.elf` |
+| OP-TEE kernel | `symbol-file ~/Workspace/OP-TEE-3.7.0/optee_os/out/arm/core/tee.elf` |
 
 注：3.6.0及之前版本需要将`trusted-firmware-a`替换为`arm-trusted-firmware`
 
