@@ -8,6 +8,10 @@ BL1的入口函数是`bl1/aarch32/bl1_entrypoint.S`中的`bl1_entrypoint`（由`
 
 ![bl1_entrypoint-flow-chart](img-doc/01.jpg)
 
+关于`el3_entrypoint_common`:
+
+![el3_entrypoint_common-flow-chart](img-doc/01a.jpg)
+
 ## BL2
 
 *以下涉及的文件路径都位于`<OP-TEE根目录>/trusted-firmware-a/`下。*
@@ -32,6 +36,8 @@ BL32入口位于`core/arch/arm/kernel/generic_entry_a32.S`的`_start`函数。
 
 | 指令 | 全称 |
 | - | - |
-| bl | Branch with Link |
 | b | Branch |
+| bl | Branch with Link |
 | isb | Instruction Synchronization Barrier |
+| ldr | Load Register |
+| stcopr | ? |
