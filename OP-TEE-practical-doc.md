@@ -147,4 +147,21 @@ cd <qemu-v7-project>/toolchains/aarch32/bin
 
 ## gdb调试-REE代码部分
 
-TBD
+[对应的官方文档](https://optee.readthedocs.io/en/latest/building/devices/qemu.html#gdb-normal-world)中有较详细的解释。总结如下：
+
+```bash
+$ cd <qemu-v7-project>/build
+# 如果是第一次加入GDBSERVER flag，需要清理
+$ # rm -rf <qemu-v7-project>/out-br
+# 启动qemu
+$ make -j8 run GDBSERVER=y
+(qemu) c
+# 在Normal World UART中，以gdbserver运行程序
+\# gdbserver :12345 xtest 4002
+# 启动ARM gdb
+$ <qemu-v7-project>/out-br/host/bin/arm-buildroot-linux-gnueabihf-gdb
+(gdb) set sysroot <qemu-v7-project>/out-br/host/arm-buildroot-linux-gnueabihf/sysroot
+(gdb) target remote :12345
+```
+
+可用命令行快捷方式，如`alias ngdb='cd ~/Workspace/OP-TEE-3.7.0; ./out-br/host/bin/arm-buildroot-linux-gnueabihf-gdb -ex "set sysroot ~/Workspace/OP-TEE-3.7.0/out-br/host/arm-buildroot-linux-gnueabihf/sysroot" -ex "target remote localhost:12345"'`自动化这几个命令。
