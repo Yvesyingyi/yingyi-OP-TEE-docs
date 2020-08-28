@@ -165,3 +165,9 @@ $ <qemu-v7-project>/out-br/host/bin/arm-buildroot-linux-gnueabihf-gdb
 ```
 
 可用命令行快捷方式，如`alias ngdb='cd ~/Workspace/OP-TEE-3.7.0; ./out-br/host/bin/arm-buildroot-linux-gnueabihf-gdb -ex "set sysroot ~/Workspace/OP-TEE-3.7.0/out-br/host/arm-buildroot-linux-gnueabihf/sysroot" -ex "target remote localhost:12345"'`自动化这几个命令。
+
+注：`arm-buildroot-linux-gnueabihf-gdb`不支持`tui`模式，原因不明
+
+### 一些重要断点
+
+`b main`
